@@ -158,7 +158,7 @@ class Game {
      *  is empty, turn over the waste to form a new stock, leaving the waste
      *  empty. */
     void stockToWaste() {
-    	save();
+        save(); //TK added
         int num = Math.min(_stock.size(), 3);
         if (num == 0) {
             _stock.move(_waste);
@@ -175,6 +175,7 @@ class Game {
     void wasteToFoundation() {
         Pile p = findFoundation(topWaste());
         checkFoundationAdd(topWaste(), p);
+        save(); //TK added
         p.move(_waste, 1);
     }
 
@@ -183,6 +184,7 @@ class Game {
     void reserveToFoundation() {
         Pile p = findFoundation(topReserve());
         checkFoundationAdd(topReserve(), p);
+        save(); //TK added
         p.move(_reserve, 1);
     }
 
@@ -196,6 +198,7 @@ class Game {
         }
         Pile foundation = findFoundation(tableau.top());
         checkFoundationAdd(tableau.top(), foundation);
+        save(); //TK added
         foundation.move(tableau, 1);
         fillFromReserve(tableau);
     }
@@ -211,6 +214,7 @@ class Game {
         if (t0.isEmpty()) {
             throw err("Can't move an empty pile");
         }
+        save(); //TK added
         if (t1.isEmpty()) {
             t1.move(t0);
         } else {
@@ -231,6 +235,7 @@ class Game {
             throw err("Cannot move card to empty tableau");
         }
         checkTableauAdd(foundation.top(), tableau);
+        save(); //TK added
         tableau.move(foundation, 1);
     }
 
@@ -244,6 +249,7 @@ class Game {
             throw err("Still cards in reserve");
         }
         checkTableauAdd(topWaste(), p);
+        save(); //TK added
         p.move(_waste, 1);
     }
 
@@ -253,6 +259,7 @@ class Game {
     void reserveToTableau(int k) {
         Pile p = tableau(k);
         checkTableauAdd(topReserve(), p);
+        save(); //TK added
         p.move(_reserve, 1);
     }
 
@@ -346,17 +353,22 @@ class Game {
     }
 
     /** Save a game state*/
-    private void save() {
+    void save() {
         Game save = new Game();
         save.copyFrom(this);
         _history.add(save);
+    }
+
+    //TK: Debug show _history size:
+    int getSize() {
+        return _history.size();
     }
 
     /** Undo feature. This moves the game back one move. By repeating
     *   it enough times, you can return to the initial state of a game
     *   immediately after the deal. Trying to undo the initial 
     *   position has no effect. */
-    private void undo() {
+    void undo() {
         if(!_history.isEmpty()) {
         	this.copyFrom(_history.get(_history.size()-1));
         	_history.remove(_history.size()-1);

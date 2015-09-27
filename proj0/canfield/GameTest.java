@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /** Tests of the Game class.
- *  @author
+ *  @author Tim Chan
  */
 
 public class GameTest {

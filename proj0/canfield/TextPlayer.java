@@ -107,6 +107,7 @@ class TextPlayer extends Player {
                     _game.foundationToTableau(inp.nextInt(), inp.nextInt());
                     break;
                 case "undo": case "u":
+                    _game.undo();
                     break;
                 case "help": case "h": case "?":
                     help();
@@ -182,6 +183,8 @@ class TextPlayer extends Player {
             displayTableau(j);
             System.out.println();
         }
+        //TK: Debug.
+        System.out.println(_game.getSize());
     }
 
     /** Display help message summarizing usage. */
