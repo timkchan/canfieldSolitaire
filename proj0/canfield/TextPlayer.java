@@ -3,9 +3,11 @@ package canfield;
 import java.util.Scanner;
 import java.util.NoSuchElementException;
 
-/** A type of player that gets input from System.stdin, reports
- *  game positions on System.stdout, and reports errors on System.err.
- *  @author P. N. Hilfinger
+/**
+ * A type of player that gets input from System.stdin, reports game positions on
+ * System.stdout, and reports errors on System.err.
+ * 
+ * @author P. N. Hilfinger
  */
 class TextPlayer extends Player {
 
@@ -18,22 +20,28 @@ class TextPlayer extends Player {
         _inp = new Scanner(System.in);
     }
 
-    /** Display informational message MSG, using additional arguments ARGS
-     *  as for String.format. */
+    /**
+     * Display informational message MSG, using additional arguments ARGS as for
+     * String.format.
+     */
     private void message(String msg, Object... args) {
         System.err.printf(msg, args);
         System.err.println();
     }
 
-    /** Display error message MSG, using additional arguments ARGS as for
-     *  String.format. */
+    /**
+     * Display error message MSG, using additional arguments ARGS as for
+     * String.format.
+     */
     private void error(String msg, Object... args) {
         message("Error: " + msg, args);
     }
 
-    /** Prompt for and read a command, ignoring comments and blank lines.
-     *  Return line after removing leading and trailing whitespace, or
-     *  return null if there are no more lines. */
+    /**
+     * Prompt for and read a command, ignoring comments and blank lines. Return
+     * line after removing leading and trailing whitespace, or return null if
+     * there are no more lines.
+     */
     private String getCommand() {
         while (true) {
             System.err.print("> ");
@@ -50,8 +58,10 @@ class TextPlayer extends Player {
         return null;
     }
 
-    /** Announce a win if there is one, ask if user wants another, and if so,
-     *  set it up.  Returns true iff user wants to quit. */
+    /**
+     * Announce a win if there is one, ask if user wants another, and if so, set
+     * it up. Returns true iff user wants to quit.
+     */
     private boolean endGame() {
         if (_game.isWon()) {
             if (!yorn("You won! Another game?")) {
@@ -82,37 +92,49 @@ class TextPlayer extends Player {
             Scanner inp = new Scanner(line);
             try {
                 switch (inp.next().toLowerCase()) {
-                case "card": case "c":
+                case "card":
+                case "c":
                     _game.stockToWaste();
                     break;
-                case "resfnd": case "rf":
+                case "resfnd":
+                case "rf":
                     _game.reserveToFoundation();
                     break;
-                case "wstfnd": case "wf":
+                case "wstfnd":
+                case "wf":
                     _game.wasteToFoundation();
                     break;
-                case "tabfnd": case "tf":
+                case "tabfnd":
+                case "tf":
                     _game.tableauToFoundation(inp.nextInt());
                     break;
-                case "restab": case "rt":
+                case "restab":
+                case "rt":
                     _game.reserveToTableau(inp.nextInt());
                     break;
-                case "wsttab": case "wt":
+                case "wsttab":
+                case "wt":
                     _game.wasteToTableau(inp.nextInt());
                     break;
-                case "tabtab": case "tt":
+                case "tabtab":
+                case "tt":
                     _game.tableauToTableau(inp.nextInt(), inp.nextInt());
                     break;
-                case "fndtab": case "ft":
+                case "fndtab":
+                case "ft":
                     _game.foundationToTableau(inp.nextInt(), inp.nextInt());
                     break;
-                case "undo": case "u":
+                case "undo":
+                case "u":
                     _game.undo();
                     break;
-                case "help": case "h": case "?":
+                case "help":
+                case "h":
+                case "?":
                     help();
                     break;
-                case "quit": case "q":
+                case "quit":
+                case "q":
                     if (endGame()) {
                         return;
                     }
@@ -128,7 +150,7 @@ class TextPlayer extends Player {
         }
     }
 
-    /** Respond to QUESTION.  Returns true iff answer is yes. */
+    /** Respond to QUESTION. Returns true iff answer is yes. */
     boolean yorn(String question) {
         while (true) {
             System.err.print(question + " [yn] ");
@@ -138,9 +160,11 @@ class TextPlayer extends Player {
             }
             String resp = _inp.next();
             switch (resp.toLowerCase()) {
-            case "y": case "yes":
+            case "y":
+            case "yes":
                 return true;
-            case "n": case "no":
+            case "n":
+            case "no":
                 return false;
             default:
                 System.err.println("Please answer yes or no.");
@@ -149,7 +173,7 @@ class TextPlayer extends Player {
     }
 
     /** Display the current state of the board. */
-    void display() { //TK Removed private for debugging
+    void display() { // TK Removed private for debugging
         System.out.printf("%10s", "");
         for (int i = 1; i <= Card.NUM_SUITS; i += 1) {
             System.out.printf(" %3s", str(_game.topFoundation(i)));
@@ -183,8 +207,8 @@ class TextPlayer extends Player {
             displayTableau(j);
             System.out.println();
         }
-        //TK: Debug.
-        System.out.println(_game.getSize());
+        // TK: Debug.
+        // System.out.println(_game.getSize());
     }
 
     /** Display help message summarizing usage. */

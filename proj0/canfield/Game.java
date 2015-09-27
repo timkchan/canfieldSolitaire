@@ -5,8 +5,10 @@ import java.util.Random;
 
 import static canfield.Utils.*;
 
-/** Represents the state of a game of Canfield.
- *  @author P. N. Hilfinger
+/**
+ * Represents the state of a game of Canfield.
+ * 
+ * @author P. N. Hilfinger
  */
 class Game {
 
@@ -36,8 +38,9 @@ class Game {
         copyFrom(game0);
     }
 
-    /** Copy my state from GAME0. No state in the result is shared with
-     *  GAME0. */
+    /**
+     * Copy my state from GAME0. No state in the result is shared with GAME0.
+     */
     void copyFrom(Game game0) {
         _stock.copyFrom(game0._stock);
         _waste.copyFrom(game0._waste);
@@ -109,9 +112,11 @@ class Game {
         return _reserve.top();
     }
 
-    /** Return the #J card from the top of tableau pile #K, where
-     *  1 <= K <= TABLEAU_SIZE, 0 <= J, or null if there is no such card.
-     *  Throws IllegalArgumentException iff K is out of range. */
+    /**
+     * Return the #J card from the top of tableau pile #K, where 1 <= K <=
+     * TABLEAU_SIZE, 0 <= J, or null if there is no such card. Throws
+     * IllegalArgumentException iff K is out of range.
+     */
     Card getTableau(int k, int j) {
         try {
             return tableau(k).get(j);
@@ -120,30 +125,35 @@ class Game {
         }
     }
 
-    /** Return the top card of tableau pile #K, where 1 <= K <= TABLEAU_SIZE.
-     *  Returns null if there is no such card.  Throws IllegalArgumentException
-     *  iff K is out of range. */
+    /**
+     * Return the top card of tableau pile #K, where 1 <= K <= TABLEAU_SIZE.
+     * Returns null if there is no such card. Throws IllegalArgumentException
+     * iff K is out of range.
+     */
     Card topTableau(int k) {
         return getTableau(k, 0);
     }
 
-    /** Return the number of cards in tableau pile #K, where
-     *  1 <= K <= Card.TABLEAU_SIZE.  Throws IllegalArgumentException iff K is
-     *  out of range. */
+    /**
+     * Return the number of cards in tableau pile #K, where 1 <= K <=
+     * Card.TABLEAU_SIZE. Throws IllegalArgumentException iff K is out of range.
+     */
     int tableauSize(int k) {
         return tableau(k).size();
     }
 
-    /** Return the number of cards in foundation pile #K, where
-     *  1 <= K <= Card.NUM_SUITS.  Throws IllegalArgumentException iff K is
-     *  out of range. */
+    /**
+     * Return the number of cards in foundation pile #K, where 1 <= K <=
+     * Card.NUM_SUITS. Throws IllegalArgumentException iff K is out of range.
+     */
     int foundationSize(int k) {
         return foundation(k).size();
     }
 
-    /** Return the top card of #K, where 1 <= K <= Card.NUM_SUITS.
-     *  Returns null if pile is empty.
-     *  Throws IllegalArgumentException iff K is out of range. */
+    /**
+     * Return the top card of #K, where 1 <= K <= Card.NUM_SUITS. Returns null
+     * if pile is empty. Throws IllegalArgumentException iff K is out of range.
+     */
     Card topFoundation(int k) {
         try {
             return foundation(k).top();
@@ -154,11 +164,12 @@ class Game {
 
     /* === Methods that implement possible moves. === */
 
-    /** Turn up to 3 cards over from the stock to the waste.  If the stock
-     *  is empty, turn over the waste to form a new stock, leaving the waste
-     *  empty. */
+    /**
+     * Turn up to 3 cards over from the stock to the waste. If the stock is
+     * empty, turn over the waste to form a new stock, leaving the waste empty.
+     */
     void stockToWaste() {
-        save(); //TK added
+        save(); // TK added
         int num = Math.min(_stock.size(), 3);
         if (num == 0) {
             _stock.move(_waste);
@@ -170,27 +181,33 @@ class Game {
         }
     }
 
-    /** Move the top card of the waste to a suitable foundation pile.
-     *  Throws IllegalArgumentException if this is not a legal move. */
+    /**
+     * Move the top card of the waste to a suitable foundation pile. Throws
+     * IllegalArgumentException if this is not a legal move.
+     */
     void wasteToFoundation() {
         Pile p = findFoundation(topWaste());
         checkFoundationAdd(topWaste(), p);
-        save(); //TK added
+        save(); // TK added
         p.move(_waste, 1);
     }
 
-    /** Move the top card of the reserve to a suitable foundation pile.
-     *  Throws IllegalArgumentException if this is not a legal move. */
+    /**
+     * Move the top card of the reserve to a suitable foundation pile. Throws
+     * IllegalArgumentException if this is not a legal move.
+     */
     void reserveToFoundation() {
         Pile p = findFoundation(topReserve());
         checkFoundationAdd(topReserve(), p);
-        save(); //TK added
+        save(); // TK added
         p.move(_reserve, 1);
     }
 
-    /** Move a card from tableau pile #T, 1 <= T <= TABLEAU_SIZE, to
-     *  a suitable foundation pile.
-     *  Throws IllegalArgumentException if this is not a legal move. */
+    /**
+     * Move a card from tableau pile #T, 1 <= T <= TABLEAU_SIZE, to a suitable
+     * foundation pile. Throws IllegalArgumentException if this is not a legal
+     * move.
+     */
     void tableauToFoundation(int t) {
         Pile tableau = tableau(t);
         if (tableau.isEmpty()) {
@@ -198,13 +215,15 @@ class Game {
         }
         Pile foundation = findFoundation(tableau.top());
         checkFoundationAdd(tableau.top(), foundation);
-        save(); //TK added
+        save(); // TK added
         foundation.move(tableau, 1);
         fillFromReserve(tableau);
     }
 
-    /** Move tableau pile #K0 to tableau pile #K1,
-     *  where K0, K1 in 1 .. TABLEAU_SIZE. */
+    /**
+     * Move tableau pile #K0 to tableau pile #K1, where K0, K1 in 1 ..
+     * TABLEAU_SIZE.
+     */
     void tableauToTableau(int k0, int k1) {
         Pile t0 = tableau(k0);
         Pile t1 = tableau(k1);
@@ -214,7 +233,7 @@ class Game {
         if (t0.isEmpty()) {
             throw err("Can't move an empty pile");
         }
-        save(); //TK added
+        save(); // TK added
         if (t1.isEmpty()) {
             t1.move(t0);
         } else {
@@ -224,8 +243,10 @@ class Game {
         fillFromReserve(t0);
     }
 
-    /** Move a card from foundation pile #F, 1 <= F <= Card.NUM_SUITS, to
-     *  tableau pile #T, 1 <= T <= TABLEAU_SIZE. */
+    /**
+     * Move a card from foundation pile #F, 1 <= F <= Card.NUM_SUITS, to tableau
+     * pile #T, 1 <= T <= TABLEAU_SIZE.
+     */
     void foundationToTableau(int f, int t) {
         Pile foundation = foundation(f);
         Pile tableau = tableau(t);
@@ -235,13 +256,15 @@ class Game {
             throw err("Cannot move card to empty tableau");
         }
         checkTableauAdd(foundation.top(), tableau);
-        save(); //TK added
+        save(); // TK added
         tableau.move(foundation, 1);
     }
 
-    /** Move the top card of the waste to tableau pile #K,
-     *  1 <= K <= TABLEAU_SIZE.  Throws IllegalArgumentException if K is
-     *  is out of bounds, there is no such card, or the move is illegal */
+    /**
+     * Move the top card of the waste to tableau pile #K, 1 <= K <=
+     * TABLEAU_SIZE. Throws IllegalArgumentException if K is is out of bounds,
+     * there is no such card, or the move is illegal
+     */
     void wasteToTableau(int k) {
         Pile p = tableau(k);
 
@@ -249,32 +272,38 @@ class Game {
             throw err("Still cards in reserve");
         }
         checkTableauAdd(topWaste(), p);
-        save(); //TK added
+        save(); // TK added
         p.move(_waste, 1);
     }
 
-    /** Move the top card of the waste to tableau pile #K,
-     *  1 <= K <= TABLEAU_SIZE.  Throws IllegalArgumentException if K is
-     *  is out of bounds, there is no such card, or the move is illegal */
+    /**
+     * Move the top card of the waste to tableau pile #K, 1 <= K <=
+     * TABLEAU_SIZE. Throws IllegalArgumentException if K is is out of bounds,
+     * there is no such card, or the move is illegal
+     */
     void reserveToTableau(int k) {
         Pile p = tableau(k);
         checkTableauAdd(topReserve(), p);
-        save(); //TK added
+        save(); // TK added
         p.move(_reserve, 1);
     }
 
     /* === Internal methods === */
 
-    /** If P is empty and the reserve is not, move the top card of the reserve
-     *  to P. */
+    /**
+     * If P is empty and the reserve is not, move the top card of the reserve to
+     * P.
+     */
     private void fillFromReserve(Pile p) {
         if (p.isEmpty() && !_reserve.isEmpty()) {
             p.move(_reserve, 1);
         }
     }
 
-    /** Return foundation pile #K, 1<=K<=Card.NUM_SUITS. Throws
-     *  IllegalArgumentException if K is out of range. */
+    /**
+     * Return foundation pile #K, 1<=K<=Card.NUM_SUITS. Throws
+     * IllegalArgumentException if K is out of range.
+     */
     private Pile foundation(int k) {
         try {
             return _foundation.get(k - 1);
@@ -283,17 +312,18 @@ class Game {
         }
     }
 
-    /** Return the foundation pile whose suit matches that of CARD.  Returns
-     *  an empty foundation pile if there is no current foundation pile
-     *  with the right suit. */
+    /**
+     * Return the foundation pile whose suit matches that of CARD. Returns an
+     * empty foundation pile if there is no current foundation pile with the
+     * right suit.
+     */
     private Pile findFoundation(Card card) {
         if (card == null) {
             throw err("No card");
         }
         int suit = card.suit();
         for (int i = 1; i <= Card.NUM_SUITS; i += 1) {
-            if (!foundation(i).isEmpty() && suit == foundation(i).top().suit())
-            {
+            if (!foundation(i).isEmpty() && suit == foundation(i).top().suit()) {
                 return foundation(i);
             }
         }
@@ -305,8 +335,10 @@ class Game {
         return null;
     }
 
-    /** Return tableau pile #K, 1<=K<=TABLEAU_SIZE. Throws
-     *  IllegalArgumentException if K is out of range. */
+    /**
+     * Return tableau pile #K, 1<=K<=TABLEAU_SIZE. Throws
+     * IllegalArgumentException if K is out of range.
+     */
     private Pile tableau(int k) {
         try {
             return _tableau.get(k - 1);
@@ -315,8 +347,10 @@ class Game {
         }
     }
 
-    /** Assuming P is a foundation pile, checks whether CARD may be placed
-     *  on it, throwing an IllegalArgumentException if not. */
+    /**
+     * Assuming P is a foundation pile, checks whether CARD may be placed on it,
+     * throwing an IllegalArgumentException if not.
+     */
     private void checkFoundationAdd(Card card, Pile p) {
         Card f = p.top();
         if (card == null) {
@@ -324,8 +358,7 @@ class Game {
         }
         if (f == null) {
             if (card.rank() != _base.rank()) {
-                throw err("foundation piles must start at %s",
-                          _base.rankName());
+                throw err("foundation piles must start at %s", _base.rankName());
             }
         } else if (card.suit() != f.suit()) {
             throw err("foundations build up in suit");
@@ -334,8 +367,10 @@ class Game {
         }
     }
 
-    /** Assuming P is a tableau pile, checks whether CARD may be placed
-     *  on it, throwing IllegalArgumentException if not. */
+    /**
+     * Assuming P is a tableau pile, checks whether CARD may be placed on it,
+     * throwing IllegalArgumentException if not.
+     */
     private void checkTableauAdd(Card card, Pile p) {
         Card t = p.top();
         if (card == null) {
@@ -345,34 +380,37 @@ class Game {
             throw err("%s must go to the foundation", card);
         } else if (t != null && t.isRed() == card.isRed()) {
             throw err("tableau is built down in alternating colors");
-        } else if (t != null
-                   && (t.rank() - card.rank() + Card.NUM_RANKS) % Card.NUM_RANKS
-                   != 1) {
+        } else if (t != null && (t.rank() - card.rank() + Card.NUM_RANKS) % Card.NUM_RANKS != 1) {
             throw err("tableau is built down in sequence");
         }
     }
 
-    /** Save a game state*/
+    /** Save a game state */
     void save() {
         Game save = new Game();
         save.copyFrom(this);
         _history.add(save);
     }
 
-    //TK: Debug show _history size:
+    // TK: Debug show _history size:
     int getSize() {
         return _history.size();
     }
 
-    /** Undo feature. This moves the game back one move. By repeating
-    *   it enough times, you can return to the initial state of a game
-    *   immediately after the deal. Trying to undo the initial 
-    *   position has no effect. */
+    /**
+     * Undo feature. This moves the game back one move. By repeating it enough
+     * times, you can return to the initial state of a game immediately after
+     * the deal. Trying to undo the initial position has no effect.
+     */
     void undo() {
-        if(!_history.isEmpty()) {
-        	this.copyFrom(_history.get(_history.size()-1));
-        	_history.remove(_history.size()-1);
+        if (!_history.isEmpty()) {
+            this.copyFrom(_history.get(_history.size() - 1));
+            _history.remove(_history.size() - 1);
         }
+    }
+
+    Pile getStock() {
+        return this._stock;
     }
 
     /** The base card: foundations build up from the rank of this card. */
