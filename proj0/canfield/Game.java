@@ -158,6 +158,7 @@ class Game {
      *  is empty, turn over the waste to form a new stock, leaving the waste
      *  empty. */
     void stockToWaste() {
+    	save();
         int num = Math.min(_stock.size(), 3);
         if (num == 0) {
             _stock.move(_waste);
@@ -344,9 +345,29 @@ class Game {
         }
     }
 
+    /** Save a game state*/
+    private void save() {
+        Game save = new Game();
+        save.copyFrom(this);
+        _history.add(save);
+    }
+
+    /** Undo feature. This moves the game back one move. By repeating
+    *   it enough times, you can return to the initial state of a game
+    *   immediately after the deal. Trying to undo the initial 
+    *   position has no effect. */
+    private void undo() {
+        if(!_history.isEmpty()) {
+        	this.copyFrom(_history.get(_history.size()-1));
+        	_history.remove(_history.size()-1);
+        }
+    }
+
     /** The base card: foundations build up from the rank of this card. */
     private Card _base;
 
+    /** Game History. */
+    private final ArrayList<Game> _history = new ArrayList<>();
     /** Contents of the stock (or hand). */
     private final Pile _stock;
     /** Contents of the waste. */

@@ -106,6 +106,8 @@ class TextPlayer extends Player {
                 case "fndtab": case "ft":
                     _game.foundationToTableau(inp.nextInt(), inp.nextInt());
                     break;
+                case "undo": case "u":
+                    break;
                 case "help": case "h": case "?":
                     help();
                     break;
