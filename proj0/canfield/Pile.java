@@ -117,6 +117,12 @@ class Pile {
         return _cards.toString();
     }
 
+    @Override
+    /** TK: Return true iff this is two piles are equal. */
+    public boolean equals(Object p) {
+        return this._cards.equals(((Pile)p)._cards);
+    }
+
     /** The cards in this pile.  The top card is last. */
     private final ArrayList<Card> _cards;
 }

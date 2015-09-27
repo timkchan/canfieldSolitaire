@@ -17,6 +17,18 @@ public class GameTest {
         assertEquals(5, g.getScore());
     }
 
-    // Tests of undo might go here.
+    /** Unit test for undo function. */
+    @Test
+    public void testUndo() {
+    	Game g = new Game();
+    	g.seed(5);
+    	g.deal();
+    	Card c1 = Card.CA;
+    	Card c2 = Card.CA;
+    	assertEquals(Card.CA, Card.CA);
+    	Pile p1 = new Pile(Card.CA, Card.C2);
+    	Pile p2 = new Pile(Card.CA, Card.C2);
+    	assertEquals(true, p1.equals(p2));
+    }
 
 }

@@ -149,7 +149,7 @@ class TextPlayer extends Player {
     }
 
     /** Display the current state of the board. */
-    private void display() {
+    void display() { //TK Removed private for debugging
         System.out.printf("%10s", "");
         for (int i = 1; i <= Card.NUM_SUITS; i += 1) {
             System.out.printf(" %3s", str(_game.topFoundation(i)));
