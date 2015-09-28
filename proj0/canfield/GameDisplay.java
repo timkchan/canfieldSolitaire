@@ -19,6 +19,9 @@ class GameDisplay extends Pad {
 
     /** Color of display field. */
     private static final Color BACKGROUND_COLOR = Color.white;
+    
+    /** Blue deck = 0 or Red deck = 1*/
+    private static int deck = 0;
 
     /* Coordinates and lengths in pixels unless otherwise stated. */
 
@@ -31,9 +34,8 @@ class GameDisplay extends Pad {
     /** Separation b/w Foundation, Tableau.*/
     private static final int SPACING_X = 110, SPACING_Y = 150;
     
-    /** Displayed location of Foundation, Tableau and their .*/
-    private static final int F1_X = 450;
-    private static final int F1_Y = 100;
+    /** Displayed location of Foundation.*/
+    private static final int F1_X = 450, F1_Y = 100;
     private static final int F2_X = F1_X + SPACING_X * 1;
     private static final int F2_Y = F1_Y;
     private static final int F3_X = F1_X + SPACING_X * 2;
@@ -41,6 +43,7 @@ class GameDisplay extends Pad {
     private static final int F4_X = F1_X + SPACING_X * 3;
     private static final int F4_Y = F1_Y;
     
+    /** Displayed location of Tableau.*/
     private static final int T1_X = F1_X;
     private static final int T1_Y = F1_Y + SPACING_Y;
     private static final int T2_X = F2_X;
@@ -50,12 +53,15 @@ class GameDisplay extends Pad {
     private static final int T4_X = F4_X;
     private static final int T4_Y = F1_Y + SPACING_Y;
     
+    /** Displayed location of Reserve.*/
     private static final int R_X = 100;
     private static final int R_Y = T1_Y;
     
+    /** Displayed location of Stock.*/
     private static final int S_X = 100;
     private static final int S_Y = T1_Y + SPACING_Y;
     
+    /** Displayed location of Waste.*/
     private static final int W_X = 100 + SPACING_X;
     private static final int W_Y = T1_Y + SPACING_Y;
 
@@ -83,7 +89,11 @@ class GameDisplay extends Pad {
 
     /** Return an Image of the back of a card. */
     private Image getBackImage() {
-        return getImage("playing-cards/blue-back.png");
+        if (deck == 0) {
+            return getImage("playing-cards/blue-back.png");
+        } else {
+            return getImage("playing-cards/red-back.png");
+        }
     }
 
     /** Draw CARD at X, Y on G. */
@@ -98,6 +108,11 @@ class GameDisplay extends Pad {
     private void paintBack(Graphics2D g, int x, int y) {
         g.drawImage(getBackImage(), x, y, CARD_WIDTH, CARD_HEIGHT, null);
     }
+    
+    /** Change colour of the deck. */
+    void setColour() {
+        deck = 1 - deck;
+    }
 
     @Override
     public synchronized void paintComponent(Graphics2D g) {
@@ -107,8 +122,6 @@ class GameDisplay extends Pad {
         // FIXME
         
        
-        
-        
         paintCard(g, Card.SA, F1_X, F1_Y);
         paintCard(g, Card.SA, F2_X, F2_Y);
         paintCard(g, Card.SA, F3_X, F3_Y);
@@ -119,9 +132,22 @@ class GameDisplay extends Pad {
         paintCard(g, Card.SA, T3_X, T3_Y);
         paintCard(g, Card.SA, T4_X, T4_Y);
         
-        paintCard(g, Card.SA, R_X, R_Y);
-        paintCard(g, Card.SA, S_X, S_Y);
-        paintCard(g, Card.SA, W_X, W_Y);
+        
+
+        if (_game.topReserve() == null) {
+            paintBack(g, R_X, R_Y);
+        } else {
+            paintCard(g, _game.topReserve(), R_X, R_Y);
+        }
+        
+        if (_game.topWaste() != null) {
+            paintCard(g, _game.topWaste(), W_X, W_Y);
+        }
+        
+        if (_game.getStock() != null) {
+            paintBack(g, S_X, S_Y);
+        }
+
     }
 
     /** Game I am displaying. */

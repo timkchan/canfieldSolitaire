@@ -14,9 +14,18 @@ class CanfieldGUI extends TopLevel {
     CanfieldGUI(String title, Game game) {
         super(title, true);
         _game = game;
+        
+        addMenuButton("Data->Undo", "undo");
+        addMenuButton("Data->Restart", "restart");
+        addMenuButton("Data->Quit", "quit");
+        
+        addMenuButton("View->Change Deck Colour", "changeDeck");
+        
+        /*
         addLabel("Sorry, no graphical interface yet",
                  new LayoutSpec("y", 0, "x", 0));
         addButton("Quit", "quit", new LayoutSpec("y", 0, "x", 1));
+        */
 
         _display = new GameDisplay(game);
         add(_display, new LayoutSpec("y", 2, "width", 2));
@@ -27,11 +36,30 @@ class CanfieldGUI extends TopLevel {
         display(true);
     }
 
-    /** Respond to "Quit" button. */
+    /** Response to "Quit" menu item.. */
     public void quit(String dummy) {
-        System.exit(1);
+        if (showOptions("Really quit?", "Quit?", "question",
+                        "Yes", "Yes", "No") == 0) {
+            System.exit(1);
+        }
+    }
+    
+    /** Response to "changeDeck" menu item.. */
+    public void changeDeck(String dummy) {
+        _display.setColour();
+        _display.repaint();
+    }
+    
+    /** Response to "Undo" menu item.. */
+    public void undo(String dummy) {
+        _game.undo();
     }
 
+    /** Response to "restart" menu item.. */
+    public void restart(String dummy) {
+        //To-do
+    }
+    
     /** Action in response to mouse-clicking event EVENT. */
     public synchronized void mouseClicked(MouseEvent event) {
         // FIXME
