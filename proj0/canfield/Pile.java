@@ -8,8 +8,10 @@ import java.util.Random;
 
 import static canfield.Main.*;
 
-/** Represents a pile of cards.
- *  @author P. N. Hilfinger
+/**
+ * Represents a pile of cards.
+ *
+ * @author P. N. Hilfinger
  */
 class Pile {
 
@@ -47,8 +49,10 @@ class Pile {
         }
     }
 
-    /** Return my Kth from top card (0 <= K < size()).  Causes
-     *  IllegalArgumentException if K is out of range. */
+    /**
+     * Return my Kth from top card (0 <= K < size()). Causes
+     * IllegalArgumentException if K is out of range.
+     */
     Card get(int k) {
         try {
             return _cards.get(size() - 1 - k);
@@ -67,32 +71,37 @@ class Pile {
         return _cards.isEmpty();
     }
 
-    /** Return and remove my top card.  Returns null and has no effect if
-     *  I am empty. */
+    /**
+     * Return and remove my top card. Returns null and has no effect if I am
+     * empty.
+     */
     Card dealTop() {
         return isEmpty() ? null : _cards.remove(_cards.size() - 1);
     }
 
-    /** Add CARD to me as my top card.  Has no effect if CARD is null. */
+    /** Add CARD to me as my top card. Has no effect if CARD is null. */
     void add(Card card) {
         if (card != null) {
             _cards.add(card);
         }
     }
 
-    /** Place all of the cards in PILE on top of my cards, so that PILE's
-     *  former top card (if any) is now mine as well. Remove the cards
-     *  from PILE. */
+    /**
+     * Place all of the cards in PILE on top of my cards, so that PILE's former
+     * top card (if any) is now mine as well. Remove the cards from PILE.
+     */
     void move(Pile pile) {
         move(pile, pile.size());
     }
 
-    /** Place the top K cards in PILE on top of my cards, so that PILE's
-     *  former top card (if any) is now mine as well.  If there are fewer than
-     *  K cards in PILE, move all of them.  Removes the cards from PILE. */
+    /**
+     * Place the top K cards in PILE on top of my cards, so that PILE's former
+     * top card (if any) is now mine as well. If there are fewer than K cards in
+     * PILE, move all of them. Removes the cards from PILE.
+     */
     void move(Pile pile, int k) {
         List<Card> L = pile._cards.subList(Math.max(0, pile.size() - k),
-                                           pile.size());
+                pile.size());
         _cards.addAll(L);
         L.clear();
     }
@@ -120,9 +129,18 @@ class Pile {
     @Override
     /** TK: Return true iff this is two piles are equal. */
     public boolean equals(Object p) {
-        return this._cards.equals(((Pile)p)._cards);
+        return this._cards.equals(((Pile) p)._cards);
     }
 
-    /** The cards in this pile.  The top card is last. */
+    @Override
+    /**
+     * TK: Not sure what is this doing besides passing style check.
+     */
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    /** The cards in this pile. The top card is last. */
     private final ArrayList<Card> _cards;
 }

@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 /**
  * A type of player that gets input from System.stdin, reports game positions on
  * System.stdout, and reports errors on System.err.
- * 
+ *
  * @author P. N. Hilfinger
  */
 class TextPlayer extends Player {
@@ -92,49 +92,37 @@ class TextPlayer extends Player {
             Scanner inp = new Scanner(line);
             try {
                 switch (inp.next().toLowerCase()) {
-                case "card":
-                case "c":
+                case "card": case "c":
                     _game.stockToWaste();
                     break;
-                case "resfnd":
-                case "rf":
+                case "resfnd": case "rf":
                     _game.reserveToFoundation();
                     break;
-                case "wstfnd":
-                case "wf":
+                case "wstfnd": case "wf":
                     _game.wasteToFoundation();
                     break;
-                case "tabfnd":
-                case "tf":
+                case "tabfnd": case "tf":
                     _game.tableauToFoundation(inp.nextInt());
                     break;
-                case "restab":
-                case "rt":
+                case "restab": case "rt":
                     _game.reserveToTableau(inp.nextInt());
                     break;
-                case "wsttab":
-                case "wt":
+                case "wsttab": case "wt":
                     _game.wasteToTableau(inp.nextInt());
                     break;
-                case "tabtab":
-                case "tt":
+                case "tabtab": case "tt":
                     _game.tableauToTableau(inp.nextInt(), inp.nextInt());
                     break;
-                case "fndtab":
-                case "ft":
+                case "fndtab": case "ft":
                     _game.foundationToTableau(inp.nextInt(), inp.nextInt());
                     break;
-                case "undo":
-                case "u":
+                case "undo": case "u":
                     _game.undo();
                     break;
-                case "help":
-                case "h":
-                case "?":
+                case "help": case "h": case "?":
                     help();
                     break;
-                case "quit":
-                case "q":
+                case "quit": case "q":
                     if (endGame()) {
                         return;
                     }
@@ -173,7 +161,7 @@ class TextPlayer extends Player {
     }
 
     /** Display the current state of the board. */
-    void display() { // TK Removed private for debugging
+    private void display() {
         System.out.printf("%10s", "");
         for (int i = 1; i <= Card.NUM_SUITS; i += 1) {
             System.out.printf(" %3s", str(_game.topFoundation(i)));
@@ -207,8 +195,6 @@ class TextPlayer extends Player {
             displayTableau(j);
             System.out.println();
         }
-        // TK: Debug.
-        // System.out.println(_game.getSize());
     }
 
     /** Display help message summarizing usage. */

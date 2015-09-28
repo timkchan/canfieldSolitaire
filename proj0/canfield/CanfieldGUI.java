@@ -6,7 +6,7 @@ import ucb.gui.LayoutSpec;
 import java.awt.event.MouseEvent;
 
 /** A top-level GUI for Canfield solitaire.
- *  @author
+ *  @author Tim Chan
  */
 class CanfieldGUI extends TopLevel {
 

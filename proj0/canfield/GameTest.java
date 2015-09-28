@@ -5,7 +5,7 @@ import org.junit.Test;
 
 /**
  * Tests of the Game class.
- * 
+ *
  * @author Tim Chan
  */
 
@@ -37,7 +37,6 @@ public class GameTest {
         g.deal();
 
         Game initState = new Game();
-        TextPlayer Tim = new TextPlayer(g);
         initState.copyFrom(g);
 
         g.stockToWaste();
@@ -58,8 +57,5 @@ public class GameTest {
             g.undo();
         }
         assertEquals(g.getStock(), initState.getStock());
-
-        /* For visual inspection. */
-        Tim.display();
     }
 }

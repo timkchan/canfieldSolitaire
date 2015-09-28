@@ -7,7 +7,7 @@ import static canfield.Utils.*;
 
 /**
  * Represents the state of a game of Canfield.
- * 
+ *
  * @author P. N. Hilfinger
  */
 class Game {
@@ -169,7 +169,7 @@ class Game {
      * empty, turn over the waste to form a new stock, leaving the waste empty.
      */
     void stockToWaste() {
-        save(); // TK added
+        save();
         int num = Math.min(_stock.size(), 3);
         if (num == 0) {
             _stock.move(_waste);
@@ -188,7 +188,7 @@ class Game {
     void wasteToFoundation() {
         Pile p = findFoundation(topWaste());
         checkFoundationAdd(topWaste(), p);
-        save(); // TK added
+        save();
         p.move(_waste, 1);
     }
 
@@ -199,7 +199,7 @@ class Game {
     void reserveToFoundation() {
         Pile p = findFoundation(topReserve());
         checkFoundationAdd(topReserve(), p);
-        save(); // TK added
+        save();
         p.move(_reserve, 1);
     }
 
@@ -215,7 +215,7 @@ class Game {
         }
         Pile foundation = findFoundation(tableau.top());
         checkFoundationAdd(tableau.top(), foundation);
-        save(); // TK added
+        save();
         foundation.move(tableau, 1);
         fillFromReserve(tableau);
     }
@@ -233,7 +233,7 @@ class Game {
         if (t0.isEmpty()) {
             throw err("Can't move an empty pile");
         }
-        save(); // TK added
+        save();
         if (t1.isEmpty()) {
             t1.move(t0);
         } else {
@@ -256,7 +256,7 @@ class Game {
             throw err("Cannot move card to empty tableau");
         }
         checkTableauAdd(foundation.top(), tableau);
-        save(); // TK added
+        save();
         tableau.move(foundation, 1);
     }
 
@@ -272,7 +272,7 @@ class Game {
             throw err("Still cards in reserve");
         }
         checkTableauAdd(topWaste(), p);
-        save(); // TK added
+        save();
         p.move(_waste, 1);
     }
 
@@ -284,7 +284,7 @@ class Game {
     void reserveToTableau(int k) {
         Pile p = tableau(k);
         checkTableauAdd(topReserve(), p);
-        save(); // TK added
+        save();
         p.move(_reserve, 1);
     }
 
@@ -323,7 +323,8 @@ class Game {
         }
         int suit = card.suit();
         for (int i = 1; i <= Card.NUM_SUITS; i += 1) {
-            if (!foundation(i).isEmpty() && suit == foundation(i).top().suit()) {
+            if (!foundation(i).isEmpty()
+                    && suit == foundation(i).top().suit()) {
                 return foundation(i);
             }
         }
@@ -358,7 +359,8 @@ class Game {
         }
         if (f == null) {
             if (card.rank() != _base.rank()) {
-                throw err("foundation piles must start at %s", _base.rankName());
+                throw err("foundation piles must start at %s",
+                        _base.rankName());
             }
         } else if (card.suit() != f.suit()) {
             throw err("foundations build up in suit");
@@ -380,19 +382,21 @@ class Game {
             throw err("%s must go to the foundation", card);
         } else if (t != null && t.isRed() == card.isRed()) {
             throw err("tableau is built down in alternating colors");
-        } else if (t != null && (t.rank() - card.rank() + Card.NUM_RANKS) % Card.NUM_RANKS != 1) {
+        } else if (t != null && (t.rank() - card.rank()
+                + Card.NUM_RANKS) % Card.NUM_RANKS != 1) {
             throw err("tableau is built down in sequence");
         }
     }
 
-    /** Save a game state */
+    /** Save a game state. */
     void save() {
         Game save = new Game();
         save.copyFrom(this);
         _history.add(save);
     }
 
-    // TK: Debug show _history size:
+    /** TK: for Debugging show _history size:.
+     * @return the length of _history.*/
     int getSize() {
         return _history.size();
     }
@@ -409,6 +413,8 @@ class Game {
         }
     }
 
+    /** TK: for Debugging: getter for _stock.
+     * @return this._stock*/
     Pile getStock() {
         return this._stock;
     }
