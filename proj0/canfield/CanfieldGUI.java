@@ -83,8 +83,9 @@ class CanfieldGUI extends TopLevel {
      *      Y-coordinate of card relative to the frame.
      */
     public boolean onCard(int cursorX, int cursorY, int locX, int locY) {
-        return (locX <= cursorX && cursorX <= locX + 90)
-                && (locY <= cursorY && cursorY <= locY + 125);
+        return (locX <= cursorX && cursorX <= locX + GameDisplay.CARD_WIDTH)
+                && (locY <= cursorY
+                    && cursorY <= locY + GameDisplay.CARD_HEIGHT);
     }
 
     /** Return True if the cursor is on the column.
@@ -98,7 +99,8 @@ class CanfieldGUI extends TopLevel {
      *      Y-coordinate of card relative to the frame.
      */
     public boolean onColumn(int cursorX, int cursorY, int locX, int locY) {
-        return (locX <= cursorX && cursorX <= locX + 90) && (locY <= cursorY);
+        return (locX <= cursorX && cursorX <= locX + GameDisplay.CARD_WIDTH)
+                && (locY <= cursorY);
     }
 
     /** Return True if the cursor is on Stock.
@@ -166,11 +168,14 @@ class CanfieldGUI extends TopLevel {
     public int onWhichT(int cursorX, int cursorY) {
         if (onColumn(cursorX, cursorY, GameDisplay.T1X, GameDisplay.T1Y)) {
             return 1;
-        } else if (onColumn(cursorX, cursorY, GameDisplay.T2X, GameDisplay.T2Y)) {
+        } else if (onColumn(cursorX, cursorY,
+                GameDisplay.T2X, GameDisplay.T2Y)) {
             return 2;
-        } else if (onColumn(cursorX, cursorY, GameDisplay.T3X, GameDisplay.T3Y)) {
+        } else if (onColumn(cursorX, cursorY,
+                GameDisplay.T3X, GameDisplay.T3Y)) {
             return 3;
-        } else if (onColumn(cursorX, cursorY, GameDisplay.T4X, GameDisplay.T4Y)) {
+        } else if (onColumn(cursorX, cursorY,
+                GameDisplay.T4X, GameDisplay.T4Y)) {
             return 4;
         }
         return 0;
@@ -199,9 +204,9 @@ class CanfieldGUI extends TopLevel {
     public synchronized void mouseMoved(MouseEvent event) {
         pressedX = event.getX();
         if (event.getX() <= GameDisplay.BOARD_WIDTH / 2) {
-            GameDisplay.faceDir = "freefaceL.png";
+            GameDisplay.setFaceDirL();
         } else {
-            GameDisplay.faceDir = "freefaceR.png";
+            GameDisplay.setFaceDirR();
         }
         _display.repaint();
     }
@@ -216,63 +221,76 @@ class CanfieldGUI extends TopLevel {
         _display.repaint();
     }
 
-    /* Location where mouse is clicked. */
-    int pressedX = 0, pressedY = 0;
+    /** Location where mouse is clicked. */
+    private int pressedX = 0, pressedY = 0;
 
-    /** Called when the mouse has been pressed. */
+    /** Called when the mouse has been pressed.
+     *
+     * @param event
+     *      A MouseEvent
+     */
     public synchronized void mousePressed(MouseEvent event) {
         pressedX = event.getX();
         pressedY = event.getY();
     }
 
-    /** Action in response to mouse-released event EVENT. */
+    /** Action in response to mouse-released event EVENT.
+     *
+     *  As order below:
+     *  rf
+     *  wf
+     *  tf
+     *  rt
+     *  wt
+     *  tt
+     *  ft
+     *
+     * */
     public synchronized void mouseReleased(MouseEvent event) {
 
-        /* rf. */
-        if (onReserve(pressedX, pressedY) && onFoundation(event.getX(), event.getY())) {
+        if (onReserve(pressedX, pressedY)
+                && onFoundation(event.getX(), event.getY())) {
             _game.reserveToFoundation();
         }
 
-        /* wf. */
-        if (onWaste(pressedX, pressedY) && onFoundation(event.getX(), event.getY())) {
+        if (onWaste(pressedX, pressedY)
+                && onFoundation(event.getX(), event.getY())) {
             _game.wasteToFoundation();
         }
 
-        /* tf. */
-        if (onTableau(pressedX, pressedY) && onFoundation(event.getX(), event.getY())) {
+        if (onTableau(pressedX, pressedY)
+                && onFoundation(event.getX(), event.getY())) {
             _game.tableauToFoundation(onWhichT(pressedX, pressedY));
         }
 
-        /* rt. */
-        if (onReserve(pressedX, pressedY) && onTableau(event.getX(), event.getY())) {
+        if (onReserve(pressedX, pressedY)
+                && onTableau(event.getX(), event.getY())) {
             _game.reserveToTableau(onWhichT(event.getX(), event.getY()));
         }
 
-        /* wt. */
-        if (onWaste(pressedX, pressedY) && onTableau(event.getX(), event.getY())) {
+        if (onWaste(pressedX, pressedY)
+                && onTableau(event.getX(), event.getY())) {
             _game.wasteToTableau(onWhichT(event.getX(), event.getY()));
         }
 
-        /* tt. */
-        if (onTableau(pressedX, pressedY) && onTableau(event.getX(), event.getY())) {
+        if (onTableau(pressedX, pressedY)
+                && onTableau(event.getX(), event.getY())) {
             _game.tableauToTableau(onWhichT(pressedX, pressedY),
                     onWhichT(event.getX(), event.getY()));
         }
 
-        /* ft. */
-        if (onFoundation(pressedX, pressedY) && onTableau(event.getX(), event.getY())) {
+        if (onFoundation(pressedX, pressedY)
+                && onTableau(event.getX(), event.getY())) {
             _game.foundationToTableau(onWhichF(pressedX, pressedY),
                     onWhichT(event.getX(), event.getY()));
         }
-
         updateCounts();
         _display.repaint();
     }
 
     /** Action in response to mouse-dragging event EVENT. */
     public synchronized void mouseDragged(MouseEvent event) {
-        // FIXME
-        _display.repaint(); // Not needed if picture does not change.
+
     }
 
     /** The board widget. */
