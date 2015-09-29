@@ -113,6 +113,39 @@ class GameDisplay extends Pad {
     void setColour() {
         deck = 1 - deck;
     }
+    
+    /**Draw Foundation. */
+    void drawFounsation(Graphics2D g) {
+        paintCard(g, _game.getFoundation().get(0).bottom(), F1_X, F1_Y);
+        paintCard(g, _game.getFoundation().get(1).bottom(), F2_X, F2_Y);
+        paintCard(g, _game.getFoundation().get(2).bottom(), F3_X, F3_Y);
+        paintCard(g, _game.getFoundation().get(3).bottom(), F4_X, F4_Y);
+    }
+    
+    /**Draw Tableau. */
+    void drawTableau(Graphics2D g) {
+        paintCard(g, _game.getTableau().get(0).bottom(), T1_X, T1_Y);
+        paintCard(g, _game.getTableau().get(1).bottom(), T2_X, T2_Y);
+        paintCard(g, _game.getTableau().get(2).bottom(), T3_X, T3_Y);
+        paintCard(g, _game.getTableau().get(3).bottom(), T4_X, T4_Y);
+    }
+    
+    /**Draw Reserve. */
+    void drawReserve(Graphics2D g) {
+        paintCard(g, _game.topReserve(), R_X, R_Y);
+    }
+    
+    /**Draw Stock. */
+    void drawStock(Graphics2D g) {
+        if (_game.getStock().size() != 0) {
+            paintBack(g, S_X, S_Y);
+        }
+    }
+    
+    /**Draw Waste. */
+    void drawWaste(Graphics2D g) {
+        paintCard(g, _game.topWaste(), W_X, W_Y);
+    }
 
     @Override
     public synchronized void paintComponent(Graphics2D g) {
@@ -120,33 +153,12 @@ class GameDisplay extends Pad {
         Rectangle b = g.getClipBounds();
         g.fillRect(0, 0, b.width, b.height);
         // FIXME
-        
-       
-        paintCard(g, Card.SA, F1_X, F1_Y);
-        paintCard(g, Card.SA, F2_X, F2_Y);
-        paintCard(g, Card.SA, F3_X, F3_Y);
-        paintCard(g, Card.SA, F4_X, F4_Y);
-        
-        paintCard(g, Card.SA, T1_X, T1_Y);
-        paintCard(g, Card.SA, T2_X, T2_Y);
-        paintCard(g, Card.SA, T3_X, T3_Y);
-        paintCard(g, Card.SA, T4_X, T4_Y);
-        
-        
-
-        if (_game.topReserve() == null) {
-            paintBack(g, R_X, R_Y);
-        } else {
-            paintCard(g, _game.topReserve(), R_X, R_Y);
-        }
-        
-        if (_game.topWaste() != null) {
-            paintCard(g, _game.topWaste(), W_X, W_Y);
-        }
-        
-        if (_game.getStock() != null) {
-            paintBack(g, S_X, S_Y);
-        }
+        g.drawImage(getImage("bg.png"), 0, 0, BOARD_WIDTH, BOARD_HEIGHT, null);
+        drawFounsation(g);
+        drawTableau(g);
+        drawReserve(g);
+        drawStock(g);
+        drawWaste(g);
 
     }
 

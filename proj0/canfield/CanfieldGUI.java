@@ -53,6 +53,7 @@ class CanfieldGUI extends TopLevel {
     /** Response to "Undo" menu item.. */
     public void undo(String dummy) {
         _game.undo();
+        _display.repaint();
     }
 
     /** Response to "restart" menu item.. */
@@ -62,10 +63,11 @@ class CanfieldGUI extends TopLevel {
     
     /** Action in response to mouse-clicking event EVENT. */
     public synchronized void mouseClicked(MouseEvent event) {
-        // FIXME
+        event.getSource();
+        _game.stockToWaste();
         _display.repaint();
     }
-
+ 
     /** Action in response to mouse-released event EVENT. */
     public synchronized void mouseReleased(MouseEvent event) {
         // FIXME

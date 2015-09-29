@@ -413,10 +413,22 @@ class Game {
         }
     }
 
-    /** TK: for Debugging: getter for _stock.
+    /** TK: return this._stock
      * @return this._stock*/
     Pile getStock() {
         return this._stock;
+    }
+    
+    /** TK: return this._stock
+     * @return this._foundation*/
+    ArrayList<Pile> getFoundation() {
+        return this._foundation;
+    }
+    
+    /** TK: return this._tableau
+     * @return this._foun_tableaudation*/
+    ArrayList<Pile> getTableau() {
+        return this._tableau;
     }
 
     /** The base card: foundations build up from the rank of this card. */
