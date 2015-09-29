@@ -68,6 +68,9 @@ class GameDisplay extends Pad {
     /** Displayed location of Waste.*/
     static final int W_X = 100 + SPACING_X;
     static final int W_Y = T1_Y + SPACING_Y;
+    
+    /** Direction of free face. */
+    static String face_dir = "freefaceL.png";
 
 
     /** A graphical representation of GAME. */
@@ -159,19 +162,19 @@ class GameDisplay extends Pad {
     void drawWaste(Graphics2D g) {
         paintCard(g, _game.topWaste(), W_X, W_Y);
     }
-
     @Override
     public synchronized void paintComponent(Graphics2D g) {
         g.setColor(BACKGROUND_COLOR);
         Rectangle b = g.getClipBounds();
         g.fillRect(0, 0, b.width, b.height);
         g.drawImage(getImage("bg.png"), 0, 0, BOARD_WIDTH, BOARD_HEIGHT, null);
+        g.drawImage(getImage("ffbg.png"), BOARD_WIDTH / 2 - 30, 20, 60, 60, null);
+        g.drawImage(getImage(face_dir), BOARD_WIDTH / 2 - 25, 25, 50, 50, null);
         drawFounsation(g);
         drawTableau(g);
         drawReserve(g);
         drawStock(g);
         drawWaste(g);
-
     }
 
     /** Game I am displaying. */

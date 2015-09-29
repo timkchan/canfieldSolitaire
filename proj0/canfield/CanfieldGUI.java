@@ -39,6 +39,7 @@ class CanfieldGUI extends TopLevel {
         _display.setMouseHandler("release", this, "mouseReleased");
         _display.setMouseHandler("drag", this, "mouseDragged");
         _display.setMouseHandler("press", this, "mousePressed"); 
+        _display.setMouseHandler("move", this, "mouseMoved");
 
         display(true);
     }
@@ -148,6 +149,16 @@ class CanfieldGUI extends TopLevel {
         return 0;
     }
 
+    /** Action in response to mouse-moving event EVENT. */
+    public synchronized void mouseMoved (MouseEvent event) {
+        pressed_x = event.getX();
+        if (event.getX() <= _display.BOARD_WIDTH / 2) {
+            _display.face_dir = "freefaceL.png";
+        } else {
+            _display.face_dir = "freefaceR.png";
+        }
+        _display.repaint();
+    }
     
     /** Action in response to mouse-clicking event EVENT. */
     public synchronized void mouseClicked(MouseEvent event) {
