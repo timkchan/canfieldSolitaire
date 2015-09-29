@@ -26,44 +26,49 @@ class GameDisplay extends Pad {
     /* Coordinates and lengths in pixels unless otherwise stated. */
 
     /** Preferred dimensions of the playing surface. */
-    private static final int BOARD_WIDTH = 1024, BOARD_HEIGHT = 700;
+    static final int BOARD_WIDTH = 1024, BOARD_HEIGHT = 700;
 
     /** Displayed dimensions of a card image. */
-    private static final int CARD_WIDTH = 90, CARD_HEIGHT = 125;
+    static final int CARD_WIDTH = 90, CARD_HEIGHT = 125;
     
     /** Separation b/w Foundation, Tableau.*/
     private static final int SPACING_X = 110, SPACING_Y = 150;
     
+    /** Separation b/w vertically overlapped cards*/
+    private static final int SPACING_Vertical = 25;
+    
+    
     /** Displayed location of Foundation.*/
-    private static final int F1_X = 450, F1_Y = 100;
-    private static final int F2_X = F1_X + SPACING_X * 1;
-    private static final int F2_Y = F1_Y;
-    private static final int F3_X = F1_X + SPACING_X * 2;
-    private static final int F3_Y = F1_Y;
-    private static final int F4_X = F1_X + SPACING_X * 3;
-    private static final int F4_Y = F1_Y;
+    static final int F1_X = 450, F1_Y = 100;
+    static final int F2_X = F1_X + SPACING_X * 1;
+    static final int F2_Y = F1_Y;
+    static final int F3_X = F1_X + SPACING_X * 2;
+    static final int F3_Y = F1_Y;
+    static final int F4_X = F1_X + SPACING_X * 3;
+    static final int F4_Y = F1_Y;
     
     /** Displayed location of Tableau.*/
-    private static final int T1_X = F1_X;
-    private static final int T1_Y = F1_Y + SPACING_Y;
-    private static final int T2_X = F2_X;
-    private static final int T2_Y = F1_Y + SPACING_Y;
-    private static final int T3_X = F3_X;
-    private static final int T3_Y = F1_Y + SPACING_Y;
-    private static final int T4_X = F4_X;
-    private static final int T4_Y = F1_Y + SPACING_Y;
+    static final int T1_X = F1_X;
+    static final int T1_Y = F1_Y + SPACING_Y;
+    static final int T2_X = F2_X;
+    static final int T2_Y = F1_Y + SPACING_Y;
+    static final int T3_X = F3_X;
+    static final int T3_Y = F1_Y + SPACING_Y;
+    static final int T4_X = F4_X;
+    static final int T4_Y = F1_Y + SPACING_Y;
     
     /** Displayed location of Reserve.*/
-    private static final int R_X = 100;
-    private static final int R_Y = T1_Y;
+    static final int R_X = 100;
+    static final int R_Y = T1_Y;
     
     /** Displayed location of Stock.*/
-    private static final int S_X = 100;
-    private static final int S_Y = T1_Y + SPACING_Y;
+    static final int S_X = 100;
+    static final int S_Y = T1_Y + SPACING_Y;
     
     /** Displayed location of Waste.*/
-    private static final int W_X = 100 + SPACING_X;
-    private static final int W_Y = T1_Y + SPACING_Y;
+    static final int W_X = 100 + SPACING_X;
+    static final int W_Y = T1_Y + SPACING_Y;
+
 
     /** A graphical representation of GAME. */
     public GameDisplay(Game game) {
@@ -116,18 +121,26 @@ class GameDisplay extends Pad {
     
     /**Draw Foundation. */
     void drawFounsation(Graphics2D g) {
-        paintCard(g, _game.getFoundation().get(0).bottom(), F1_X, F1_Y);
-        paintCard(g, _game.getFoundation().get(1).bottom(), F2_X, F2_Y);
-        paintCard(g, _game.getFoundation().get(2).bottom(), F3_X, F3_Y);
-        paintCard(g, _game.getFoundation().get(3).bottom(), F4_X, F4_Y);
+        paintCard(g, _game.getFoundation().get(0).top(), F1_X, F1_Y);
+        paintCard(g, _game.getFoundation().get(1).top(), F2_X, F2_Y);
+        paintCard(g, _game.getFoundation().get(2).top(), F3_X, F3_Y);
+        paintCard(g, _game.getFoundation().get(3).top(), F4_X, F4_Y);
     }
     
     /**Draw Tableau. */
     void drawTableau(Graphics2D g) {
-        paintCard(g, _game.getTableau().get(0).bottom(), T1_X, T1_Y);
-        paintCard(g, _game.getTableau().get(1).bottom(), T2_X, T2_Y);
-        paintCard(g, _game.getTableau().get(2).bottom(), T3_X, T3_Y);
-        paintCard(g, _game.getTableau().get(3).bottom(), T4_X, T4_Y);
+        for (int i = 0; i < _game.getTableau().get(0).size(); i++) {
+            paintCard(g, _game.getTableau().get(0).get(_game.getTableau().get(0).size() - i - 1), T1_X, T1_Y + SPACING_Vertical * i);
+        }
+        for (int i = 0; i < _game.getTableau().get(1).size(); i++) {
+            paintCard(g, _game.getTableau().get(1).get(_game.getTableau().get(1).size() - i - 1), T2_X, T2_Y + SPACING_Vertical * i);
+        }
+        for (int i = 0; i < _game.getTableau().get(2).size(); i++) {
+            paintCard(g, _game.getTableau().get(2).get(_game.getTableau().get(2).size() - i - 1), T3_X, T3_Y + SPACING_Vertical * i);
+        }
+        for (int i = 0; i < _game.getTableau().get(3).size(); i++) {
+            paintCard(g, _game.getTableau().get(3).get(_game.getTableau().get(3).size() - i - 1), T4_X, T4_Y + SPACING_Vertical * i);
+        }
     }
     
     /**Draw Reserve. */
@@ -152,7 +165,6 @@ class GameDisplay extends Pad {
         g.setColor(BACKGROUND_COLOR);
         Rectangle b = g.getClipBounds();
         g.fillRect(0, 0, b.width, b.height);
-        // FIXME
         g.drawImage(getImage("bg.png"), 0, 0, BOARD_WIDTH, BOARD_HEIGHT, null);
         drawFounsation(g);
         drawTableau(g);

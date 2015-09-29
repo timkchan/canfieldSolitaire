@@ -430,6 +430,12 @@ class Game {
     ArrayList<Pile> getTableau() {
         return this._tableau;
     }
+    
+    /** TK: return this._base
+     * @return this._base*/
+    String getBase() {
+        return _base.toString();
+    }
 
     /** The base card: foundations build up from the rank of this card. */
     private Card _base;
