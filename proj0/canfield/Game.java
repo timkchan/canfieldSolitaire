@@ -323,8 +323,7 @@ class Game {
         }
         int suit = card.suit();
         for (int i = 1; i <= Card.NUM_SUITS; i += 1) {
-            if (!foundation(i).isEmpty()
-                    && suit == foundation(i).top().suit()) {
+            if (!foundation(i).isEmpty() && suit == foundation(i).top().suit()) {
                 return foundation(i);
             }
         }
@@ -359,8 +358,7 @@ class Game {
         }
         if (f == null) {
             if (card.rank() != _base.rank()) {
-                throw err("foundation piles must start at %s",
-                        _base.rankName());
+                throw err("foundation piles must start at %s", _base.rankName());
             }
         } else if (card.suit() != f.suit()) {
             throw err("foundations build up in suit");
@@ -382,8 +380,7 @@ class Game {
             throw err("%s must go to the foundation", card);
         } else if (t != null && t.isRed() == card.isRed()) {
             throw err("tableau is built down in alternating colors");
-        } else if (t != null && (t.rank() - card.rank()
-                + Card.NUM_RANKS) % Card.NUM_RANKS != 1) {
+        } else if (t != null && (t.rank() - card.rank() + Card.NUM_RANKS) % Card.NUM_RANKS != 1) {
             throw err("tableau is built down in sequence");
         }
     }
@@ -395,8 +392,11 @@ class Game {
         _history.add(save);
     }
 
-    /** TK: for Debugging show _history size:.
-     * @return the length of _history.*/
+    /**
+     * TK: for Debugging show _history size:.
+     * 
+     * @return the length of _history.
+     */
     int getSize() {
         return _history.size();
     }
@@ -413,26 +413,38 @@ class Game {
         }
     }
 
-    /** TK: return this._stock
-     * @return this._stock*/
+    /**
+     * TK: return this._stock
+     * 
+     * @return this._stock
+     */
     Pile getStock() {
         return this._stock;
     }
-    
-    /** TK: return this._stock
-     * @return this._foundation*/
+
+    /**
+     * TK: return this._stock
+     * 
+     * @return this._foundation
+     */
     ArrayList<Pile> getFoundation() {
         return this._foundation;
     }
-    
-    /** TK: return this._tableau
-     * @return this._foun_tableaudation*/
+
+    /**
+     * TK: return this._tableau
+     * 
+     * @return this._foun_tableaudation
+     */
     ArrayList<Pile> getTableau() {
         return this._tableau;
     }
-    
-    /** TK: return this._base
-     * @return this._base*/
+
+    /**
+     * TK: return this._base
+     * 
+     * @return this._base
+     */
     String getBase() {
         return _base.toString();
     }
