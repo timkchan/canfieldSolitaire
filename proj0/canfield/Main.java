@@ -6,7 +6,7 @@ import ucb.util.CommandArgs;
  *  @author P. N. Hilfinger
  */
 public class Main {
-
+//?
     /** The main program.  ARGS may contain the options --seed=NUM,
      *  (random seed); and --text (use textual commands). */
     public static void main(String... args) {
