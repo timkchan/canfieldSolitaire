@@ -1,5 +1,5 @@
 # Canfield Solitaire
-![](https://github.com/timkchan/solitaire/blob/master/img/gp.gif?raw=true)
+![](img/gp.gif?raw=true)
 
 ### 1. Rules of Canfield
 
@@ -15,7 +15,7 @@ The result looks like this:
 
 ![](https://github.com/timkchan/solitaire/blob/master/img/canfield1.png?raw=true)
 
-The foundation piles are built up (i.e., by increasing rank) in suit starting from the four cards whose rank is the same as that of the base card: the card that is initially dealt to the first foundation pile (this is four in the example), and wrapping around from King to Ace, if needed (so that last card to go on a foundation pile in the example above is a three). The tableau piles are built down in alternating colors (red on black on red), again wrapping around from Ace to King, if needed. You may not build on the base card (for example, in Figure 1, you may not play the 3♠ from the top of the reserve to the 4♦ in the tableau. Figure 2 shows an example from the middle of a possible game.
+The foundation piles are built up (i.e., by increasing rank) in suit starting from the four cards whose rank is the same as that of the base card: the card that is initially dealt to the first foundation pile (this is four in the example), and wrapping around from King to Ace, if needed (so that last card to go on a foundation pile in the example above is a three). The tableau piles are built down in alternating colours (red on black on red), again wrapping around from Ace to King, if needed. You may not build on the base card (for example, in Figure 1, you may not play the 3♠ from the top of the reserve to the 4♦ in the tableau. Figure 2 shows an example from the middle of a possible game.
 
 ![](https://github.com/timkchan/solitaire/blob/master/img/canfield2.png?raw=true)
 
@@ -23,7 +23,7 @@ You may turn over cards from the stock to the waste in groups of three, or, if t
 
 You may move the top card of the reserve (if one is left) to a foundation pile, if legal, or to a tableau pile, if legal.
 
-You may move the top card of a tableau pile to a foundation pile, if legal. Also, you may move an entire tableau pile to the top of another tableau pile if this results in a proper tableau pile (alternating colors built down). Whenever a tableau pile becomes empty (because its cards are moved to the foundation or to another tableau pile), it is automatically filled with the top card from the reserve. If the reserve is empty, you may move the top card of the waste to an empty tableau pile.
+You may move the top card of a tableau pile to a foundation pile, if legal. Also, you may move an entire tableau pile to the top of another tableau pile if this results in a proper tableau pile (alternating colours built down). Whenever a tableau pile becomes empty (because its cards are moved to the foundation or to another tableau pile), it is automatically filled with the top card from the reserve. If the reserve is empty, you may move the top card of the waste to an empty tableau pile.
 
 Finally, you may move a card from the foundation back to a tableau pile, if legal. This is sometimes useful for making it possible to move another card or cards to the tableau.
 
